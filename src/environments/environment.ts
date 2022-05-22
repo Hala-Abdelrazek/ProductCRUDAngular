@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  ServerBase: "https://producttaskbyhalaabdelrazek.azurewebsites.net/",
+  DefaultImage:"Resources/img/07bd0bd9-f407-4d51-af36-7e7a3ed964a6defaultImage.jpg"
 };
 
 /*

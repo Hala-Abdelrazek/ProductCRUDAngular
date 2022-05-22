@@ -1,0 +1,186 @@
+<nav class="navbar navbar-light">
+  <div class="container">
+    <span class="navbar-brand mb-0 h1 text-blue">Products</span>
+    <button type="button" class="btn btn-primary m-2" (click)="openAddModal()">
+      Add Product
+    </button>
+  </div>
+</nav>
+
+<div class="container-fluid mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Products Table</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered  text-center" id="excel-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Description</th>
+              <th>Image</th>
+              <th>Controls</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td>{{ product.productName }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.description }}</td>
+              <td>
+                <img
+                  src="{{ ServerBase }}{{ product.image }}"
+                  alt="Image"
+                  class="img-size-50 mr-3 img-circle"
+                />
+              </td>
+              <td>
+                <div class="btn-group "align="center">
+                  <button
+                    type="button"
+                    (click)="openEditModal($event, product)"
+                    class="btn btn-primary m-1"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    type="button"
+                    (click)="deleteProduct($event, product.productId)"
+                    class="btn btn-primary m-1"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+</div>
+<ngx-smart-modal #productModal identifier="productModal">
+  <form
+    [formGroup]="AddOrEditForm"
+    class="mt-5"
+    (ngSubmit)="addOrEditProduct()"
+  >
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        formControlName="productName"
+        id="productName"
+        class="form-control"
+        placeholder="Product Name"
+      />
+      <div class="input-group-append" *ngIf=
+      "AddOrEditForm.get('productName')?.invalid &&
+      AddOrEditForm.get('productName')?.touched">
+        <div class="input-group-text">
+          <div
+            class="error-message"
+           
+          >
+            <span
+              class="glyphicon glyphicon-envelope form-control-feedback"
+              *ngIf="AddOrEditForm.get('productName')?.hasError('required')"
+              >Product Name is required
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group mb-3">
+      <input
+        type="number"
+        formControlName="price"
+        id="price"
+        class="form-control"
+        placeholder="Enter Product Price"
+      />
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <div
+            class="error-message"
+            *ngIf="
+              AddOrEditForm.get('price')?.invalid &&
+              AddOrEditForm.get('price')?.touched
+            "
+          >
+            <span
+              class="glyphicon glyphicon-envelope form-control-feedback"
+              *ngIf="AddOrEditForm.get('price')?.hasError('required')"
+              >Price is required
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Description</label>
+        <textarea class="form-control"   formControlName="description"  id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
+    <div class="input-group mb-3">
+      <input
+        type="number"
+        formControlName="quantity"
+        id="quantity"
+        class="form-control"
+        placeholder="Enter quantity"
+      />
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <div
+            class="error-message"
+            *ngIf="
+              AddOrEditForm.get('quantity')?.invalid &&
+              AddOrEditForm.get('quantity')?.touched
+            "
+          >
+            <span
+              class="glyphicon glyphicon-envelope form-control-feedback"
+              *ngIf="AddOrEditForm.get('quantity')?.hasError('required')"
+              >Quantity is required
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group mb-3">
+      <label class="mb-3 mr-3">Image</label>
+      <input
+        type="file"
+        (change)="onFileSelect($event)"
+        formControlName="image"
+
+        id="image"
+        name="image"
+      />
+     
+    </div>
+    <div class="col-xs-4">
+      <button
+        type="submit"
+        [disabled]="!AddOrEditForm.valid || !AddOrEditForm.dirty"
+        class="btn btn-primary btn-block btn-flat"
+      >
+        Save
+      </button>
+      <button
+        (click)="closeModal()"
+        type="button"
+        class="btn btn-primary btn-block btn-flat mt-4"
+      >
+        cancel
+      </button>
+    </div>
+  </form>
+</ngx-smart-modal>
